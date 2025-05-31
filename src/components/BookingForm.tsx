@@ -29,34 +29,40 @@ const BookingForm = () => {
   const [selectedStep, setSelectedStep] = useState(1);
 
   const packages = [
-    { id: "essential", name: "Essential", price: 599, duration: "4 hours" },
-    { id: "premium", name: "Premium", price: 999, duration: "6 hours" },
-    { id: "luxury", name: "Luxury", price: 1599, duration: "8 hours" }
+    { id: "heritage-essential", name: "Heritage Essential", price: 45000, duration: "4 hours" },
+    { id: "cultural-premium", name: "Cultural Premium", price: 75000, duration: "8 hours" },
+    { id: "royal-heritage", name: "Royal Heritage", price: 125000, duration: "12 hours" }
   ];
 
   const eventTypes = [
-    "Wedding",
-    "Birthday Party",
-    "Corporate Event",
-    "Anniversary",
-    "Graduation",
-    "Baby Shower",
-    "Engagement Party",
-    "Family Reunion",
-    "Other"
+    "Tamil Wedding",
+    "Telugu Wedding", 
+    "Kannada Wedding",
+    "Malayalam Wedding",
+    "Temple Ceremony",
+    "Upanayanam (Sacred Thread)",
+    "Namakarana (Naming Ceremony)",
+    "Annaprashana (First Rice)",
+    "Diwali Celebration",
+    "Dussehra Festival",
+    "Onam Celebration",
+    "Pongal Festival",
+    "Engagement Ceremony",
+    "Mehendi Ceremony",
+    "Other South Indian Event"
   ];
 
   const addOns = [
-    { id: "extra-hour", name: "Additional Hour", price: 150 },
-    { id: "engagement", name: "Engagement Session", price: 300 },
-    { id: "photo-booth", name: "Photo Booth Setup", price: 250 },
-    { id: "same-day-edit", name: "Same-Day Edit Video", price: 400 },
-    { id: "extra-album", name: "Extra Photo Album", price: 200 },
-    { id: "rush-delivery", name: "Rush Delivery", price: 100 }
+    { id: "extra-hour", name: "Additional Hour", price: 3500 },
+    { id: "pre-wedding", name: "Pre-Wedding Shoot", price: 15000 },
+    { id: "mehendi", name: "Mehendi Photography", price: 12000 },
+    { id: "temple-video", name: "Temple Video", price: 25000 },
+    { id: "heritage-album", name: "Heritage Album", price: 8000 },
+    { id: "express-delivery", name: "Express Delivery", price: 5000 }
   ];
 
   const steps = [
-    { id: 1, title: "Event Details", description: "Tell us about your event" },
+    { id: 1, title: "Event Details", description: "Tell us about your South Indian celebration" },
     { id: 2, title: "Package Selection", description: "Choose your photography package" },
     { id: 3, title: "Contact Info", description: "Your contact information" },
     { id: 4, title: "Review & Submit", description: "Review your booking details" }
@@ -89,7 +95,7 @@ const BookingForm = () => {
     e.preventDefault();
     toast({
       title: "Booking Request Submitted!",
-      description: "We'll contact you within 24 hours to confirm your booking.",
+      description: "We'll contact you within 24 hours to discuss your South Indian celebration.",
     });
     console.log("Booking submitted:", formData);
   };
@@ -124,7 +130,7 @@ const BookingForm = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="eventTime">Event Time</Label>
+                <Label htmlFor="eventTime">Muhurtham Time / Event Time</Label>
                 <Input
                   id="eventTime"
                   type="time"
@@ -139,11 +145,11 @@ const BookingForm = () => {
                 <Label htmlFor="eventType">Event Type *</Label>
                 <Select onValueChange={(value) => handleInputChange("eventType", value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select event type" />
+                    <SelectValue placeholder="Select your celebration type" />
                   </SelectTrigger>
                   <SelectContent>
                     {eventTypes.map((type) => (
-                      <SelectItem key={type} value={type.toLowerCase()}>
+                      <SelectItem key={type} value={type.toLowerCase().replace(/\s+/g, '-')}>
                         {type}
                       </SelectItem>
                     ))}
@@ -155,7 +161,7 @@ const BookingForm = () => {
                 <Input
                   id="guestCount"
                   type="number"
-                  placeholder="e.g. 50"
+                  placeholder="e.g. 200"
                   value={formData.guestCount}
                   onChange={(e) => handleInputChange("guestCount", e.target.value)}
                 />
@@ -166,17 +172,17 @@ const BookingForm = () => {
               <Label htmlFor="location">Event Location *</Label>
               <Input
                 id="location"
-                placeholder="Venue name and address"
+                placeholder="Temple name, kalyana mandapam, or venue address"
                 value={formData.location}
                 onChange={(e) => handleInputChange("location", e.target.value)}
               />
             </div>
 
             <div>
-              <Label htmlFor="details">Additional Details</Label>
+              <Label htmlFor="details">Cultural Details & Special Requests</Label>
               <Textarea
                 id="details"
-                placeholder="Tell us more about your event, special requests, timeline, etc."
+                placeholder="Tell us about specific rituals, family traditions, special ceremonies, cultural requirements, etc."
                 value={formData.details}
                 onChange={(e) => handleInputChange("details", e.target.value)}
                 rows={4}
@@ -194,18 +200,18 @@ const BookingForm = () => {
                   key={pkg.id}
                   className={`cursor-pointer transition-all ${
                     formData.package === pkg.id 
-                      ? "border-blue-500 shadow-lg" 
+                      ? "border-orange-500 shadow-lg" 
                       : "border-gray-200 hover:shadow-md"
                   }`}
                   onClick={() => handleInputChange("package", pkg.id)}
                 >
                   <CardHeader className="text-center">
                     <CardTitle className="text-xl">{pkg.name}</CardTitle>
-                    <CardDescription>${pkg.price} • {pkg.duration}</CardDescription>
+                    <CardDescription>₹{pkg.price.toLocaleString('en-IN')} • {pkg.duration}</CardDescription>
                   </CardHeader>
                   <CardContent className="text-center">
                     {formData.package === pkg.id && (
-                      <Badge className="bg-blue-500">Selected</Badge>
+                      <Badge className="bg-orange-500">Selected</Badge>
                     )}
                   </CardContent>
                 </Card>
@@ -213,21 +219,21 @@ const BookingForm = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4">Optional Add-ons</h3>
+              <h3 className="text-lg font-semibold mb-4">Optional Cultural Add-ons</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 {addOns.map((addOn) => (
                   <div
                     key={addOn.id}
                     className={`p-4 border rounded-lg cursor-pointer transition-all ${
                       formData.addOns.includes(addOn.id)
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-orange-500 bg-orange-50"
                         : "border-gray-200 hover:bg-gray-50"
                     }`}
                     onClick={() => handleAddOnToggle(addOn.id)}
                   >
                     <div className="flex justify-between items-center">
                       <span className="font-medium">{addOn.name}</span>
-                      <Badge variant="outline">+${addOn.price}</Badge>
+                      <Badge variant="outline">+₹{addOn.price.toLocaleString('en-IN')}</Badge>
                     </div>
                   </div>
                 ))}
@@ -266,7 +272,7 @@ const BookingForm = () => {
               <Input
                 id="phone"
                 type="tel"
-                placeholder="(555) 123-4567"
+                placeholder="+91 98765 43210"
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
               />
@@ -282,7 +288,7 @@ const BookingForm = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Booking Summary</CardTitle>
+                <CardTitle>South Indian Celebration Booking Summary</CardTitle>
                 <CardDescription>Please review your booking details</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -290,7 +296,7 @@ const BookingForm = () => {
                   <div>
                     <p><strong>Event:</strong> {formData.eventType}</p>
                     <p><strong>Date:</strong> {formData.eventDate}</p>
-                    <p><strong>Time:</strong> {formData.eventTime || "TBD"}</p>
+                    <p><strong>Time:</strong> {formData.eventTime || "To be confirmed"}</p>
                     <p><strong>Location:</strong> {formData.location}</p>
                   </div>
                   <div>
@@ -306,18 +312,18 @@ const BookingForm = () => {
                   {selectedPackage && (
                     <div className="flex justify-between">
                       <span>{selectedPackage.name} Package</span>
-                      <span>${selectedPackage.price}</span>
+                      <span>₹{selectedPackage.price.toLocaleString('en-IN')}</span>
                     </div>
                   )}
                   {selectedAddOns.map((addOn) => (
                     <div key={addOn.id} className="flex justify-between">
                       <span>{addOn.name}</span>
-                      <span>+${addOn.price}</span>
+                      <span>+₹{addOn.price.toLocaleString('en-IN')}</span>
                     </div>
                   ))}
                   <div className="border-t mt-2 pt-2 font-bold flex justify-between">
                     <span>Total</span>
-                    <span>${calculateTotal()}</span>
+                    <span>₹{calculateTotal().toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </CardContent>
@@ -331,13 +337,13 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="min-h-screen py-16 px-6 bg-gray-50">
+    <div className="min-h-screen py-16 px-6 bg-orange-50">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-6 text-gray-800">Book Your Session</h1>
+          <h1 className="text-5xl font-bold mb-6 text-gray-800">Book Your South Indian Celebration</h1>
           <p className="text-xl text-gray-600">
-            Let's capture your special moments together. Fill out the form below to get started.
+            Let's preserve your cultural heritage together. Share details about your special celebration.
           </p>
         </div>
 
@@ -348,7 +354,7 @@ const BookingForm = () => {
               <div key={step.id} className="flex flex-col items-center relative">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
                   selectedStep === step.id 
-                    ? "bg-blue-600 text-white" 
+                    ? "bg-orange-600 text-white" 
                     : selectedStep > step.id
                     ? "bg-green-600 text-white"
                     : "bg-gray-200 text-gray-600"
@@ -394,11 +400,12 @@ const BookingForm = () => {
                     type="button"
                     onClick={() => setSelectedStep(selectedStep + 1)}
                     disabled={!isStepValid(selectedStep)}
+                    className="bg-orange-600 hover:bg-orange-700"
                   >
                     Next Step
                   </Button>
                 ) : (
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                  <Button type="submit" className="bg-orange-600 hover:bg-orange-700">
                     Submit Booking Request
                   </Button>
                 )}
@@ -409,15 +416,15 @@ const BookingForm = () => {
 
         {/* Contact Info */}
         <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">Need help or have questions?</p>
+          <p className="text-gray-600 mb-4">Need help with your South Indian celebration booking?</p>
           <div className="flex justify-center space-x-6">
             <div className="flex items-center">
-              <Phone className="h-4 w-4 mr-2 text-blue-600" />
-              <span>(555) 123-4567</span>
+              <Phone className="h-4 w-4 mr-2 text-orange-600" />
+              <span>+91 98765 43210</span>
             </div>
             <div className="flex items-center">
-              <Mail className="h-4 w-4 mr-2 text-blue-600" />
-              <span>hello@snapmoments.com</span>
+              <Mail className="h-4 w-4 mr-2 text-orange-600" />
+              <span>hello@snapmoments.in</span>
             </div>
           </div>
         </div>
